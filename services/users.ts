@@ -1,6 +1,9 @@
 import api from "@/lib/api";
 import type { PaginatedUsers, User, UserPayload } from "@/types/user";
 
+type UserResponse = { message: string; user: User };
+type MessageResponse = { message: string };
+
 export const usersService = {
   list: (page: number) =>
     api
@@ -8,15 +11,11 @@ export const usersService = {
       .then((r) => r.data.users),
 
   create: (payload: UserPayload) =>
-    api
-      .post<{ message: string; user: User }>("/users", payload)
-      .then((r) => r.data.user),
+    api.post<UserResponse>("/users", payload).then((r) => r.data),
 
   update: (id: string, payload: UserPayload) =>
-    api
-      .put<{ message: string; user: User }>(`/users/${id}`, payload)
-      .then((r) => r.data.user),
+    api.put<UserResponse>(`/users/${id}`, payload).then((r) => r.data),
 
   remove: (id: string) =>
-    api.delete<{ message: string }>(`/users/${id}`).then((r) => r.data),
+    api.delete<MessageResponse>(`/users/${id}`).then((r) => r.data),
 };

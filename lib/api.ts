@@ -1,5 +1,10 @@
 import axios from "axios";
-import { config } from "process";
+
+export type ApiError = {
+  status?: number;
+  message: string;
+  errors?: Record<string, string[]>;
+};
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -21,7 +26,7 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error): Promise<ApiError> => {
     if (error.response) {
       if (error.response.status === 401 && typeof window !== "undefined") {
         localStorage.removeItem("token");
