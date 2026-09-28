@@ -175,6 +175,8 @@ app/.../page.tsx      # UI only, calls the hooks
 
 Avoid calling the API from `useEffect` in components. Use `useQuery` for reads and `useMutation` (with `invalidateQueries`) for writes.
 
+The users screen requests `GET /users?page=N`. The Laravel response should wrap its paginator as `{ "users": { "data": [], "current_page": 1, "last_page": 1, "per_page": 5, "from": 1, "to": 5, "total": 5 } }`; the screen uses those fields for server-side pagination and searches the currently loaded page.
+
 ## Scripts
 
 ```bash
